@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "Rent Hepo",
+    "slug": "ahmeddyAppDesign",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/app.logo.png",
+    "scheme": "ahmeddyappdesign",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/images/app.logo.png",
+        "backgroundImage": "./assets/images/app.logo.png",
+        "monochromeImage": "./assets/images/app.logo.png"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.Renthapo",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
+        }
+      }
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/app.logo.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/app.logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#0474DA"
+          }
+        }
+      ],
+      "expo-web-browser",
+      "@react-native-community/datetimepicker"
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
