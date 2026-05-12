@@ -7,7 +7,6 @@
     "icon": "./assets/images/app.logo.png",
     "scheme": "ahmeddyappdesign",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "config": {
@@ -21,7 +20,6 @@
         "backgroundImage": "./assets/images/app.logo.png",
         "monochromeImage": "./assets/images/app.logo.png"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.Renthapo",
       "config": {
@@ -54,6 +52,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "987ccba9-2553-4a5f-88fb-8d4e704fd985"
+      }
     }
   }
 }
