@@ -42,7 +42,7 @@ const Profile = () => {
             [
                 {
                     text: "Cancel",
-                    style: "cancel" // এটি ক্লিক করলে অ্যালার্ট বন্ধ হয়ে যাবে
+                    style: "cancel"
                 },
                 {
                     text: "OK",
