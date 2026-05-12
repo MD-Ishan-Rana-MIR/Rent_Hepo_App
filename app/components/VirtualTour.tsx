@@ -68,7 +68,10 @@ const VirtualTour = ({ images }: VirtualTourProps) => {
                 <WebView
                     key={currentIndex}
                     originWhitelist={['*']}
-                    source={{ html }}
+                    source={{
+                        html: html,
+                        baseUrl: 'https://api.renthapo.com'
+                    }}
                     style={tw`flex-1`}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}

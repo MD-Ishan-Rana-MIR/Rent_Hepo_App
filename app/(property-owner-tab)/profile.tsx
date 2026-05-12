@@ -3,8 +3,8 @@ import tw from '@/lib/tailwind';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-import React from 'react';
-import { Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Alert, Image, RefreshControl, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import Toast from 'react-native-toast-message';
@@ -34,7 +34,9 @@ const Profile = () => {
 
   // ============================= Landloard Profile Api ===========================================
 
-  const { data, isLoading } = useUserProfileQuery({});
+  const queryArg = useMemo(() => ({}), []);
+
+  const { data, isLoading, refetch } = useUserProfileQuery(queryArg);
 
 
 
@@ -129,6 +131,27 @@ const Profile = () => {
   }
 
 
+  const [user, setUser] = useState({});
+
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+
+    try {
+      await refetch();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    setUser(data);
+  }, [data]);
+
 
 
 
@@ -140,6 +163,8 @@ const Profile = () => {
   }
 
 
+
+
   return (
     <SafeAreaView style={tw`flex-1 bg-blackBg`}>
       <StatusBar barStyle="dark-content" />
@@ -147,6 +172,12 @@ const Profile = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw`px-5 pb-10`}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
       >
         {/* --- HEADER --- */}
         <View style={tw`mb-8`}>
@@ -160,7 +191,11 @@ const Profile = () => {
           <View style={tw`relative`}>
             <View style={tw`w-32 h-32 rounded-full border-4 border-primaryBorder p-1`}>
               <Image
-                source={{ uri: data?.data?.user?.avatar_url }}
+                source={
+                  data?.data?.user?.avatar_url
+                    ? { uri: data?.data?.user?.avatar_url }
+                    : require('../../assets/images/user.png')
+                }
                 style={tw`w-full h-full rounded-full`}
               />
             </View>

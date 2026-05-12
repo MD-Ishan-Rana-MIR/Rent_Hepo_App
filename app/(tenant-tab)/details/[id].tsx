@@ -4,7 +4,7 @@ import VirtualTour from '@/app/components/VirtualTour';
 import { useSingleTenentPropertyQuery } from '@/app/redux/api/tanentDiscoverApi';
 import tw from '@/lib/tailwind';
 import { PropertyResponseType } from '@/lib/type';
-import { imageUrl } from '@/lib/url';
+import { imageUrl, imageUrlTwo } from '@/lib/url';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -91,19 +91,19 @@ const PropertyDetails = () => {
 
   const propertyImages = singleProperty?.property_images || [];
 
-  console.log('is360Visible',is360Visible)
+  // console.log('is360Visible',is360Visible)
 
-  const demoImages = [
-    {
-      path : "https://pannellum.org/images/alma.jpg"
-    },
-    {
-      path : "https://pannellum.org/images/cerro-tolo-s.jpg"
-    },
-    {
-      path : "https://pannellum.org/images/jure.jpg"
-    }
-  ];
+  // const demoImages = [
+  //   {
+  //     path : "https://pannellum.org/images/alma.jpg"
+  //   },
+  //   {
+  //     path : "https://pannellum.org/images/cerro-tolo-s.jpg"
+  //   },
+  //   {
+  //     path : "https://pannellum.org/images/jure.jpg"
+  //   }
+  // ];
 
 
   return (
@@ -122,7 +122,11 @@ const PropertyDetails = () => {
             </TouchableOpacity>
           </SafeAreaView>
 
-          <VirtualTour images={demoImages.map(img => `${img.path}`)} />
+          <VirtualTour
+            images={propertyImages.map(
+              (img) => `${imageUrlTwo}${img.path}`
+            )}
+          />
 
           <View style={tw`absolute bottom-10 w-full items-center`}>
             <Text style={tw`text-white/80 text-xs bg-black/60 px-5 py-2 rounded-full`}>
@@ -280,7 +284,7 @@ const PropertyDetails = () => {
 
       </View>
       <BookingModal
-      id = {id}
+        id={id}
         showTimeModal={showTimeModal}
         onClose={() => setShowTimeModal(false)}
       />

@@ -11,12 +11,7 @@ import { useAllLandloardPropertyQuery } from '../redux/api/landloardPropertyApi'
 import { useGetNotificationsQuery } from '../redux/api/notificationApi';
 
 const BusinessDashboard = () => {
-    const stats = [
-        { label: 'Total Properties', value: '45' },
-        { label: 'Total Booking', value: '100' },
-        { label: 'Total Pending', value: '46' },
-        { label: 'Total Approved', value: '15' },
-    ];
+
 
     const cardShadow = {
         shadowColor: '#000',
@@ -29,11 +24,14 @@ const BusinessDashboard = () => {
 
 
 
-    const { data, isLoading } = useAllLandloardPropertyQuery({});
+    const { data, isLoading, refetch } = useAllLandloardPropertyQuery(undefined);
 
 
 
     const propertyData: LandlordProperty[] = data?.data?.properties || []
+
+    const [refreshing, setRefreshing] = React.useState(false);
+
 
 
 
@@ -51,6 +49,17 @@ const BusinessDashboard = () => {
         )
     }
 
+    const onRefresh = async () => {
+        setRefreshing(true);
+
+        try {
+            await refetch();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setRefreshing(false);
+        }
+    };
 
 
 
@@ -101,7 +110,7 @@ const BusinessDashboard = () => {
                         ]}
                     >
                         <Text style={tw`text-center text-textLg font-montserrat-700 text-primaryText mb-1`}>
-                            {data?.data?.total_property  ? data?.data?.total_property : 0}
+                            {data?.data?.total_property ? data?.data?.total_property : 0}
                         </Text>
                         <Text style={tw`text-center text-zinc-500 font-montserrat-500 text-xs`}>
                             Total Properties
@@ -115,7 +124,7 @@ const BusinessDashboard = () => {
                         ]}
                     >
                         <Text style={tw`text-center text-textLg font-montserrat-700 text-primaryText mb-1`}>
-                            {data?.data?.total_booking ? data?.data?.total_booking : 0 }
+                            {data?.data?.total_booking ? data?.data?.total_booking : 0}
                         </Text>
                         <Text style={tw`text-center text-zinc-500 font-montserrat-500 text-xs`}>
                             Total Booking
@@ -129,7 +138,7 @@ const BusinessDashboard = () => {
                         ]}
                     >
                         <Text style={tw`text-center text-textLg font-montserrat-700 text-primaryText mb-1`}>
-                            {data?.data?.total_pending ? data?.data?.total_pending : 0 }
+                            {data?.data?.total_pending ? data?.data?.total_pending : 0}
                         </Text>
                         <Text style={tw`text-center text-zinc-500 font-montserrat-500 text-xs`}>
                             Total Pending
@@ -143,7 +152,7 @@ const BusinessDashboard = () => {
                         ]}
                     >
                         <Text style={tw`text-center text-textLg font-montserrat-700 text-primaryText mb-1`}>
-                            {data?.data?.total_approved ? data?.data?.total_approved : 0 }
+                            {data?.data?.total_approved ? data?.data?.total_approved : 0}
                         </Text>
                         <Text style={tw`text-center text-zinc-500 font-montserrat-500 text-xs`}>
                             Total Approved
@@ -171,6 +180,8 @@ const BusinessDashboard = () => {
                 )}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={tw`pb-10`} // Extra space at bottom
+                refreshing={refreshing}
+                onRefresh={onRefresh}
             />
         </View>
     );
