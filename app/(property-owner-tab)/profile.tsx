@@ -4,7 +4,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Alert, Image, RefreshControl, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, RefreshControl, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { SvgXml } from 'react-native-svg';
 import Toast from 'react-native-toast-message';
@@ -243,10 +243,19 @@ const Profile = () => {
         <TouchableOpacity
           activeOpacity={0.8}
           style={tw`mt-10 flex-row items-center justify-center bg-[#E50000] py-4 rounded-2xl border border-red-100`}
-          onPress={handleLogout}
+          onPress={() => handleLogout()}
         >
-          <MaterialCommunityIcons name="logout" size={20} color="#fff" style={tw`mr-2`} />
-          <Text style={tw`text-[#fff] font-montserrat-700 text-base`}>Log Out</Text>
+          {logoutLoading ? (
+            <View style={tw`flex-row items-center`}>
+              <ActivityIndicator size="small" color="#fff" />
+              <Text style={tw`text-white font-bold ml-2`}>Processing...</Text>
+            </View>
+          ) : (
+            <View style={tw`flex-row items-center`}>
+              <MaterialCommunityIcons name="logout" size={20} color="#fff" style={tw`mr-2`} />
+              <Text style={tw`text-white font-montserrat-700 text-base`}>Log Out</Text>
+            </View>
+          )}
         </TouchableOpacity>
 
       </ScrollView>
