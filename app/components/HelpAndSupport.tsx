@@ -28,13 +28,13 @@ const HelpAndSupport = () => {
             icon: 'whatsapp',
             label: 'WhatsApp',
             color: '#25D366',
-            onPress: () => Linking.openURL('whatsapp://send?phone=+880123456789')
+            onPress: () => Linking.openURL('whatsapp://send?phone=+17809946760')
         },
         {
             icon: 'email-outline',
             label: 'Email Support',
             color: '#EF4444',
-            onPress: () => Linking.openURL('mailto:support@yourapp.com')
+            onPress: () => Linking.openURL('mailto:info@chapplus.com')
         }
     ];
 
