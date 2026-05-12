@@ -76,7 +76,7 @@ const LandLoadRegister = () => {
     }
   };
 
-  console.log("you are tanent registration from")
+  // console.log("you are tanent registration from")
 
   return (
     <View style={tw`flex-1 bg-blackBg px-4`}>

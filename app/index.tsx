@@ -11,7 +11,7 @@ const Index = () => {
   const { data, isLoading, isError, isFetching } = useUserProfileQuery({});
   const userRole = data?.data?.user?.role;
 
-  console.log("userrole",userRole)
+  // console.log("userrole",userRole)
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;

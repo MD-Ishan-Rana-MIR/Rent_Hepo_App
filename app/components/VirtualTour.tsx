@@ -82,7 +82,7 @@ const VirtualTour = ({ images }: VirtualTourProps) => {
                     scrollEnabled={false}
                     onMessage={(event) => {
                         const msg = event.nativeEvent.data;
-                        console.log("Tour Log:", msg);
+                        // console.log("Tour Log:", msg);
                         if (msg === 'loaded' || msg.startsWith('error') || msg.startsWith('exception')) {
                             setLoading(false);
                         }

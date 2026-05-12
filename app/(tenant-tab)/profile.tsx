@@ -95,7 +95,7 @@ const Profile = () => {
             [
                 {
                     text: "Cancel",
-                    style: "cancel" 
+                    style: "cancel"
                 },
                 {
                     text: "OK",
@@ -223,7 +223,7 @@ const Profile = () => {
                     <MenuItem
                         icon={<SvgXml xml={profile} width="18" height="18" />}
                         title="Delete Account"
-                        onPress={() =>handleDeleteAccount()}
+                        onPress={() => handleDeleteAccount()}
                         isLast={true}
                     />
 
