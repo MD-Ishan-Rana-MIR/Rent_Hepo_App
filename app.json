@@ -13,7 +13,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "This app uses the camera to let users take profile and property photos directly in the app.",
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library so you can choose profile and property images to upload.",
-        "NSPhotoLibraryAddUsageDescription": "This app may save edited or captured images back to your photo library when needed."
+        "NSPhotoLibraryAddUsageDescription": "This app may save edited or captured images back to your photo library when needed.",
+        "ITSAppUsesNonExemptEncryption": false
       },
       "config": {
         "googleMapsApiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
@@ -60,6 +61,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "987ccba9-2553-4a5f-88fb-8d4e704fd985"
+      }
     }
   }
 }
