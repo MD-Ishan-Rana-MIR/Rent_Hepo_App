@@ -64,7 +64,7 @@ const TenantLogin = () => {
         }
     };
 
-    console.log("you are tanent login from")
+    // console.log("you are tanent login from")
 
     return (
         <View style={tw`flex-1 bg-blackBg`}>
@@ -112,7 +112,7 @@ const TenantLogin = () => {
                                             value={value}
                                             keyboardType="email-address"
                                             autoCapitalize="none"
-                                            editable={!isLoading} 
+                                            editable={!isLoading}
                                         />
                                     </View>
                                 )}
@@ -159,7 +159,7 @@ const TenantLogin = () => {
                         <TouchableOpacity
                             activeOpacity={0.8}
                             onPress={handleSubmit(onSubmit)}
-                            disabled={isLoading} 
+                            disabled={isLoading}
                             style={tw`bg-btnColor h-15 rounded-2xl items-center justify-center mt-2 ${isLoading ? 'opacity-70' : ''}`}
                         >
                             {isLoading ? (

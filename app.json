@@ -10,9 +10,15 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "This app uses the camera to let users take profile and property photos directly in the app.",
+        "NSPhotoLibraryUsageDescription": "This app needs access to your photo library so you can choose profile and property images to upload.",
+        "NSPhotoLibraryAddUsageDescription": "This app may save edited or captured images back to your photo library when needed."
+      },
       "config": {
         "googleMapsApiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
-      }
+      },
+      "bundleIdentifier": "com.anonymous.Renthapo"
     },
     "android": {
       "adaptiveIcon": {

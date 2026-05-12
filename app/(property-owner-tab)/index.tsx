@@ -55,7 +55,7 @@ const BusinessDashboard = () => {
         try {
             await refetch();
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         } finally {
             setRefreshing(false);
         }

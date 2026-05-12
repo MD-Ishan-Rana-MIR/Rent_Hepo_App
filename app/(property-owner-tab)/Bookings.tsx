@@ -6,7 +6,7 @@ import tw from '@/lib/tailwind';
 import { BookingBookingDetails } from '@/lib/type';
 import { imageUrl } from '@/lib/url';
 import { Ionicons } from '@expo/vector-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
     Alert,
     FlatList,
@@ -34,20 +34,12 @@ const Bookings = () => {
     const bookingData: BookingBookingDetails[] = data?.data || [];
 
 
-    // 2. State for filtered results
-    const [filteredData, setFilteredData] = useState<BookingBookingDetails[]>([]);
-
-    // 3. Fix: Sync filteredData whenever bookingData (API) OR searchQuery changes
-    useEffect(() => {
-        if (!searchQuery.trim()) {
-            setFilteredData(bookingData);
-        } else {
-            const filtered = (bookingData || []).filter(item =>
-                // The ?. (Optional Chaining) prevents the crash if track_id is missing
-                item?.booking_track_id && item.booking_track_id.includes(searchQuery)
-            );
-            setFilteredData(filtered);
-        }
+    // 2. Compute filtered results (useMemo avoids setting state inside useEffect)
+    const filteredData = useMemo(() => {
+        if (!searchQuery.trim()) return bookingData;
+        return (bookingData || []).filter(item =>
+            item?.booking_track_id && item.booking_track_id.includes(searchQuery)
+        );
     }, [searchQuery, bookingData]);
 
     const [bookingReject] = useBookingRejectMutation();

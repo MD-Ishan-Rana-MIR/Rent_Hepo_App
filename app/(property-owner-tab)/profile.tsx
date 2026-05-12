@@ -71,7 +71,7 @@ const Profile = () => {
                   type: 'success',
                   text1: 'Logged out successfully',
                 });
-                return router.replace("/(spalash-screen)");
+                return router.replace("/(auth)");
               }
 
             } catch (error: any) {
@@ -142,7 +142,7 @@ const Profile = () => {
     try {
       await refetch();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     } finally {
       setRefreshing(false);
     }
@@ -234,6 +234,27 @@ const Profile = () => {
             title="Delete Account"
             onPress={() => handleDeleteAccount()}
             isLast={true}
+          />
+        </View>
+
+
+        <View style={tw`bg-white border border-primaryBorder/10 rounded-[24px] px-5 shadow-sm`}>
+          <MenuItem
+            icon={<MaterialCommunityIcons name="shield-check-outline" size={20} color="#1A4B9B" />}
+            title="Privacy Policy"
+            onPress={() => router.push("/components/PrivacyPolicy")}
+
+          />
+          <MenuItem
+            icon={<MaterialCommunityIcons name="text-box-check-outline" size={20} color="#1A4B9B" />}
+            title="Terms & Condiction"
+            onPress={() => router.push("/components/TermsAndConditions")}
+          />
+          <MenuItem
+            icon={<MaterialCommunityIcons name="help-circle-outline" size={20} color="#1A4B9B" />}
+            title="Help & Support"
+            isLast={true}
+            onPress={() => router.push("/components/HelpAndSupport")}
           />
         </View>
 
