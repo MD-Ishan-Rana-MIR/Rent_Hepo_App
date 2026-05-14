@@ -44,7 +44,7 @@ const VirtualTour = ({ images }: VirtualTourProps) => {
                     showControls: true,
                     mouseZoom: true,
                     friction: 0.1,
-                    crossOrigin: "anonymous" // সার্ভারে CORS থাকলে এটি কাজ করবে
+                    crossOrigin: "Chapplus" // সার্ভারে CORS থাকলে এটি কাজ করবে
                 });
 
                 viewer.on('load', function () {

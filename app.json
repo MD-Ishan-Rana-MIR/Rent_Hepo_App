@@ -14,12 +14,13 @@
         "NSCameraUsageDescription": "This app uses the camera to let users take profile and property photos directly in the app.",
         "NSPhotoLibraryUsageDescription": "This app needs access to your photo library so you can choose profile and property images to upload.",
         "NSPhotoLibraryAddUsageDescription": "This app may save edited or captured images back to your photo library when needed.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to show nearby properties and provide location-based services.",
         "ITSAppUsesNonExemptEncryption": false
       },
       "config": {
         "googleMapsApiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
       },
-      "bundleIdentifier": "com.anonymous.Renthapo"
+      "bundleIdentifier": "com.Chapplus.Renthapo"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,7 +31,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.Renthapo",
+      "package": "com.Chapplus.Renthapo",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
