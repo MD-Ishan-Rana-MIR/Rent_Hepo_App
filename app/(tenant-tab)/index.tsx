@@ -82,6 +82,8 @@ const Home = () => {
         radius: appliedFilters.radius || appliedFilters?.location || appliedFilters?.lat || appliedFilters?.lng || appliedFilters?.location || undefined,
     });
 
+    console.log("",)
+
 
     const PROPERTIES: Property[] = data?.data || [];
 

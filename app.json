@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Rent Hepo",
+    "name": "RentHepo",
     "slug": "ahmeddyAppDesign",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -56,7 +56,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "987ccba9-2553-4a5f-88fb-8d4e704fd985"
+        "projectId": "04c2d0ff-3e3e-439b-bd93-24a516d12e14"
       }
     }
   }
