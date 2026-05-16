@@ -202,6 +202,11 @@ const Profile = () => {
                 </View>
 
                 {/* --- GENERAL SECTION --- */}
+                
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit. */}
+
+                {/* dcasdfsda */}
+
                 <View style={tw`mb-3`}>
                     <Text style={tw`font-montserrat-600 text-base text-bodyText px-1`}>General</Text>
                 </View>
@@ -230,10 +235,7 @@ const Profile = () => {
 
                 </View>
 
-                {/* --- OTHERS SECTION --- */}
-                {/* <View style={tw`mb-3`}>
-                    <Text style={tw`font-montserrat-600 text-base text-bodyText px-1`}>Information</Text>
-                </View> */}
+                {/* --- SUPPORT SECTION --- */}
 
                 <View style={tw`bg-white border border-primaryBorder/10 rounded-[24px] px-5 shadow-sm`}>
                     <MenuItem

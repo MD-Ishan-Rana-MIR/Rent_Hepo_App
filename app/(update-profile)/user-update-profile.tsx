@@ -75,7 +75,6 @@ const UpdateProfile = () => {
                             formData.append('phone_number', phone);
                             formData.append('address', address);
 
-                            // 3. Append Image if a new one was selected
                             if (selectedImage && !selectedImage.startsWith('http')) {
                                 const filename = selectedImage.split('/').pop();
                                 const match = /\.(\w+)$/.exec(filename || '');
@@ -89,8 +88,7 @@ const UpdateProfile = () => {
                                 });
                             }
 
-                            // 4. Send API Request
-                            // Pass the formData directly to your mutation
+                            
                             const res = await profileUpdate(formData).unwrap();
 
                             if (res) {
