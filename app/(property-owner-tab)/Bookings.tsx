@@ -50,6 +50,8 @@ const Bookings = () => {
         setIsModalVisible(true);
     };
 
+    // this is layout if index page 
+
     const handleBookingReject = async (id: number) => {
         Alert.alert(
             "Reject Booking",

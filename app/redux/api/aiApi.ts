@@ -5,7 +5,7 @@ export const aiApi = baseApi.injectEndpoints({
     findPropertyByAi: builder.mutation({
       query: (trimmedText) => {
         return {
-          url: `/ai-search?message=${encodeURIComponent(trimmedText)}`,
+          url: `/tenant/al-assistant?message=${encodeURIComponent(trimmedText)}`,
           method: "POST",
         };
       },
