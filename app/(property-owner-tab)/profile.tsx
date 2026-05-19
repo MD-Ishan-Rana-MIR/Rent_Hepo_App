@@ -1,3 +1,4 @@
+import { errorMsg } from '@/lib/errorMsg';
 import { password, profile } from '@/lib/icon';
 import tw from '@/lib/tailwind';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -142,7 +143,7 @@ const Profile = () => {
     try {
       await refetch();
     } catch (error) {
-      // console.log(error);
+      return errorMsg(error)
     } finally {
       setRefreshing(false);
     }

@@ -1,4 +1,5 @@
 import { useGetNotificationsQuery, useReadAllNotificationMutation, useSingleNotificationReadMutation } from '@/app/redux/api/notificationApi';
+import { errorMsg } from '@/lib/errorMsg';
 import { successMsg } from '@/lib/successMsg';
 import tw from '@/lib/tailwind';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -44,7 +45,6 @@ const LandLoardNotification = () => {
         }
     };
 
-    // নির্দিষ্ট নোটিফিকেশন রিড করা
     const handleReadOne = async (id: string, isRead: boolean) => {
         if (!isRead) {
             try {
@@ -53,7 +53,7 @@ const LandLoardNotification = () => {
                     return successMsg(res?.message)
                 }
             } catch (error) {
-                console.error("Failed to read notification", error);
+                return errorMsg(error);
             }
         }
     };
@@ -65,7 +65,7 @@ const LandLoardNotification = () => {
             successMsg(res?.message)
             Alert.alert("Success", "All notifications marked as read");
         } catch (error) {
-            console.error("Failed to read all", error);
+            return errorMsg(error);
         }
     };
 

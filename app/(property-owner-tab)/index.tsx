@@ -1,3 +1,4 @@
+import { errorMsg } from '@/lib/errorMsg';
 import tw from '@/lib/tailwind';
 import { LandlordProperty } from '@/lib/type';
 import { Ionicons } from '@expo/vector-icons';
@@ -55,7 +56,7 @@ const BusinessDashboard = () => {
         try {
             await refetch();
         } catch (error) {
-            // console.log(error);
+            return errorMsg(error)
         } finally {
             setRefreshing(false);
         }
@@ -174,6 +175,13 @@ const BusinessDashboard = () => {
             <FlatList
                 data={propertyData}
                 keyExtractor={(item) => item.id.toString()}
+                ListEmptyComponent={
+                    <View style={tw`flex-1 items-center justify-center mt-20`}>
+                        <Text style={tw`text-zinc-400 text-base font-medium`}>
+                            No properties found 😕
+                        </Text>
+                    </View>
+                }
                 renderItem={({ item }) => (
                     <View style={tw`px-5`}>
                         <LandLoadrdCard {...item} />

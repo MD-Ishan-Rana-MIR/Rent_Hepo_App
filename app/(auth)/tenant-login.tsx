@@ -64,7 +64,6 @@ const TenantLogin = () => {
         }
     };
 
-    // console.log("you are tanent login from")
 
     return (
         <View style={tw`flex-1 bg-blackBg`}>

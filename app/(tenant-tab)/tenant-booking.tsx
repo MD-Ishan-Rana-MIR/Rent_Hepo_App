@@ -134,7 +134,7 @@ const TenantBooking = () => {
                     <SvgXml xml={largeViewIcon} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={()=>{handleDeleteBooking(item?.id)}} >
+                <TouchableOpacity onPress={() => { handleDeleteBooking(item?.id) }} >
                     <SvgXml xml={deleteIcon} />
                 </TouchableOpacity>
             </View>
@@ -153,10 +153,16 @@ const TenantBooking = () => {
                 data={BOOKING_DATA}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={renderItem}
-                contentContainerStyle={tw` pb-10`}
+                contentContainerStyle={tw`pb-10 flex-grow`}
                 showsVerticalScrollIndicator={false}
+                ListEmptyComponent={
+                    <View style={tw`flex-1 justify-center items-center mt-20`}>
+                        <Text style={tw`text-zinc-500 font-montserrat-500 text-lg`}>
+                            No Booking Found
+                        </Text>
+                    </View>
+                }
             />
-
             {/* DETAILS MODAL */}
             <Modal visible={isViewModalVisible} transparent animationType="fade">
                 <View style={tw`flex-1 justify-center items-center bg-black/50 px-5`}>
@@ -166,10 +172,10 @@ const TenantBooking = () => {
                             <Text style={tw` text-lg text-black `} >User Information</Text>
                             <View style={tw`flex-row items-center gap-x-3 mt-2 mb-3.5 `} >
                                 <View>
-                                    <Image source={{uri : selectedBooking?.tenant?.avatar_url}} style={tw` rounded-full w-10 h-10 `} />
+                                    <Image source={{ uri: selectedBooking?.tenant?.avatar_url }} style={tw` rounded-full w-10 h-10 `} />
                                 </View>
                                 <View>
-                                    <Text style={tw`text-black font-medium text-xs`} >{ selectedBooking?.tenant?.name }</Text>
+                                    <Text style={tw`text-black font-medium text-xs`} >{selectedBooking?.tenant?.name}</Text>
                                     <Text style={tw`text-[#8C8C8C] text-[8px] font-light `} >Verified Identity</Text>
                                 </View>
                             </View>
@@ -179,7 +185,7 @@ const TenantBooking = () => {
                             <Text style={tw` text-lg text-black `} >Property Information</Text>
                             <View style={tw`flex-row items-center gap-x-3 mt-2 mb-3.5 `} >
                                 <View>
-                                    <Image source={{uri : selectedBooking?.property?.landlord?.avatar_url}} style={tw` rounded-full w-10 h-10 `} />
+                                    <Image source={{ uri: selectedBooking?.property?.landlord?.avatar_url }} style={tw` rounded-full w-10 h-10 `} />
                                 </View>
                                 <View>
                                     <Text style={tw`text-black font-medium text-xs`} >{selectedBooking?.property?.landlord?.name}</Text>

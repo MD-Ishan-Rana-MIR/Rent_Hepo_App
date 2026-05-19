@@ -16,14 +16,15 @@ export const tanentDiscoverApi = baseApi.injectEndpoints({
             max_price: params?.max_price,
             min_area: params?.min_area,
             max_area: params?.max_area,
-            lat: params?.lat, // ✅ added
-            long: params?.long, // ✅ added
-            radius: params?.radius, // ✅ added
+            lat: params?.lat,
+            long: params?.long,
+            radius: params?.radius,
           },
         };
       },
       providesTags: ["Discover"],
     }),
+
     singleTenentProperty: builder.query({
       query: (id) => ({
         url: `/tenant/view-property/${id}`,
@@ -31,8 +32,19 @@ export const tanentDiscoverApi = baseApi.injectEndpoints({
       }),
       providesTags: ["TanentBooking"],
     }),
+
+    propertyMapBoxDetails: builder.query({
+      query: ({ latitude, longitude }) => ({
+        url: `/tenant/map-properties?latitude=${latitude}&longitude=${longitude}`,
+        method: "GET",
+      }),
+      providesTags: ["TanentBooking"],
+    }),
   }),
 });
 
-export const { useDiscoverPropertyQuery, useSingleTenentPropertyQuery } =
-  tanentDiscoverApi;
+export const {
+  useDiscoverPropertyQuery,
+  useSingleTenentPropertyQuery,
+  usePropertyMapBoxDetailsQuery,
+} = tanentDiscoverApi;

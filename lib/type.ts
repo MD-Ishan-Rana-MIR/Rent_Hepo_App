@@ -64,6 +64,8 @@ type PropertyImageType = {
 export interface Property {
   id: number;
   landlord_id: number;
+  currency_symbol: string;
+  currency: string;
   title: string;
   description: string;
   purpose: "Sale" | "Rent";
@@ -97,6 +99,8 @@ type Landlord = {
 };
 
 export interface PropertyResponseType {
+  currency_symbol: string;
+  currency: string;
   id: number;
   landlord_id: number;
   title: string;
@@ -178,6 +182,8 @@ export interface BookingBookingDetails {
 }
 
 export interface LandlordProperty {
+  currency_symbol: string;
+  currency: string;
   id: number;
   landlord_id: number;
   title: string;
@@ -207,6 +213,8 @@ export interface LandlordInfo {
 }
 
 export interface LandlordPropertyDetails {
+  currency_symbol: string;
+  currency: string;
   id: number;
   landlord_id: number;
   title: string;
@@ -225,5 +233,11 @@ export interface LandlordPropertyDetails {
   admin_display_status: "Show" | "Hide";
   created_at: string;
   updated_at: string;
-  landlord: LandlordInfo; // ল্যান্ডলর্ড ডিটেইলস অবজেক্ট
+  landlord: LandlordInfo;
+}
+
+export interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
 }

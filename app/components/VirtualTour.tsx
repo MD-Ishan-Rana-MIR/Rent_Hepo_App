@@ -44,7 +44,7 @@ const VirtualTour = ({ images }: VirtualTourProps) => {
                     showControls: true,
                     mouseZoom: true,
                     friction: 0.1,
-                    crossOrigin: "anonymous" // সার্ভারে CORS থাকলে এটি কাজ করবে
+                    crossOrigin: "Chapplus" // সার্ভারে CORS থাকলে এটি কাজ করবে
                 });
 
                 viewer.on('load', function () {
@@ -82,7 +82,6 @@ const VirtualTour = ({ images }: VirtualTourProps) => {
                     scrollEnabled={false}
                     onMessage={(event) => {
                         const msg = event.nativeEvent.data;
-                        // console.log("Tour Log:", msg);
                         if (msg === 'loaded' || msg.startsWith('error') || msg.startsWith('exception')) {
                             setLoading(false);
                         }

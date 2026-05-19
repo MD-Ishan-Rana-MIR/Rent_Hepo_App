@@ -1,3 +1,4 @@
+import { errorMsg } from '@/lib/errorMsg';
 import tw from '@/lib/tailwind';
 import { imageUrlTwo } from '@/lib/url';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +18,8 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useFindPropertyByAiMutation } from '../redux/api/aiApi';
 
 type Property = {
+  currency_symbol: string;
+  currency: string;
   id: number;
   title: string;
   location: string;
@@ -63,7 +66,7 @@ const AIAssistantPage = () => {
         setMessages(prev => [...prev, aiMsg]);
       }
     } catch (error) {
-      console.error("AI Chat Error:", error);
+      return errorMsg(error);
     }
   };
 
@@ -135,7 +138,7 @@ const AIAssistantPage = () => {
                             <Text style={tw`text-zinc-500 text-[10px] ml-1`}>{prop.location}</Text>
                           </View>
                         </View>
-                        <Text style={tw`text-[#0474DA] font-bold text-sm`}>${prop.price}</Text>
+                        <Text style={tw`text-[#0474DA] font-bold text-sm`}>{prop.currency_symbol} {prop.price}</Text>
                       </View>
 
                       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tw`flex-row mb-4`}>
