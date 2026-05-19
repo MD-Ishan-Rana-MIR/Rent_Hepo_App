@@ -15,7 +15,7 @@ interface BookingModalProps {
     onClose: () => void;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ id, showTimeModal, onClose }) => {
+const BookingModal: React.FC<BookingModalProps> = ({ id, showTimeModal, onClose, singleProperty }) => {
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
@@ -91,7 +91,6 @@ const BookingModal: React.FC<BookingModalProps> = ({ id, showTimeModal, onClose 
                                 successMsg(res?.message || "Booking Successful!");
                             }
                         } catch (error: any) {
-                            console.error("Booking Error:", error);
                             errorMsg(error?.data?.message || error?.message || "Something went wrong");
                         }
                     }
@@ -187,7 +186,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ id, showTimeModal, onClose 
                             value={phoneNumber}
                             onChangeText={(text) => setPhoneNumber(text)} />
 
-                        
+
                         <Button text={"Request Visit Confirmation"} handleContinueToDetails={handleRequestConfirmation} color={"#0474DA"} width={"full"} font={"bold"} paddingTopBottom={16} rounded={"xl"} isLoading={isLoading} />
                     </View>
                 </View>
@@ -208,7 +207,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ id, showTimeModal, onClose 
 
                         <View style={tw`bg-blue-50 w-full p-4 rounded-2xl mb-6`}>
                             <Text style={tw`text-[#0474DA] text-xs font-bold mb-1`}>VISIT DETAILS</Text>
-                            <Text style={tw`text-black text-sm`}>Skyline Modern Villa • {formattedDate}, {formattedTime}</Text>
+                            <Text style={tw`text-black text-sm`}>{singleProperty?.title} • {formattedDate}, {formattedTime}</Text>
                         </View>
 
                         <TouchableOpacity

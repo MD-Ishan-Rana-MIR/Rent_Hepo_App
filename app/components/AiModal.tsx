@@ -1,3 +1,4 @@
+import { errorMsg } from '@/lib/errorMsg';
 import tw from '@/lib/tailwind';
 import { imageUrlTwo } from '@/lib/url';
 import { Ionicons } from '@expo/vector-icons';
@@ -22,6 +23,8 @@ type Property = {
     id: number;
     title: string;
     location: string;
+    currency_symbol: string;
+    currency: string;
     price: string;
     property_images: { path: string; name: string }[];
 };
@@ -73,7 +76,7 @@ const AiModal = ({ openAiModal, setOpenAiModal }: AiModalProps) => {
                 setMessages(prev => [...prev, aiMsg]);
             }
         } catch (error) {
-            console.error("AI Chat Error:", error);
+            return errorMsg(error);
         }
     };
 
@@ -139,7 +142,7 @@ const AiModal = ({ openAiModal, setOpenAiModal }: AiModalProps) => {
                                                                 <Text style={tw`text-black font-extrabold text-sm`}>{prop.title}</Text>
                                                                 <Text style={tw`text-zinc-500 text-[10px]`}>{prop.location}</Text>
                                                             </View>
-                                                            <Text style={tw`text-[#0474DA] font-bold text-sm`}>${prop.price}</Text>
+                                                            <Text style={tw`text-[#0474DA] font-bold text-sm`}>{prop.currency_symbol} {prop.price}</Text>
                                                         </View>
 
                                                         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tw`flex-row mb-4`}>

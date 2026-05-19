@@ -76,7 +76,7 @@ const LandLoadrdCard = (item: LandlordProperty) => {
 
                 {/* Price */}
                 <Text style={tw`text-primaryText text-textLg font-medium mb-1`}>
-                    ${item.price}
+                    {item.currency_symbol} {item.price}
                 </Text>
 
                 {/* Divider */}

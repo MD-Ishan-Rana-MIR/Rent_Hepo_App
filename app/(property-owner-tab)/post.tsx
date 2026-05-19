@@ -1,6 +1,7 @@
 import { errorMsg } from '@/lib/errorMsg';
 import { successMsg } from '@/lib/successMsg';
 import tw from '@/lib/tailwind';
+import { Currency } from '@/lib/type';
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
@@ -21,6 +22,7 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import SelectDropdown from 'react-native-select-dropdown';
 import * as z from 'zod';
+import { useGetAllCurrenciesQuery } from '../redux/api/aiApi';
 import { useTanentPropertyPostMutation } from '../redux/api/landloardBookingApi';
 
 
@@ -35,6 +37,9 @@ const propertySchema = z.object({
     availability: z.string(),
     purpose: z.string(),
     property_category: z.string(),
+    city: z.string(),
+    // code: z.string().min(1, "Currency code is required"),
+    // symbol: z.string().min(1, "Currency symbol is required"),
     property_images: z.array(
         z.object({
             images_name: z.string().min(1),
@@ -54,6 +59,7 @@ export interface LocationData {
 
 
 const AddProperty = () => {
+    const [location, setLocation] = useState<string>('');
 
     type PropertyFormData = z.infer<typeof propertySchema>;
     // 2. Initialize Hook Form
@@ -69,7 +75,9 @@ const AddProperty = () => {
             location: '',
             availability: '',
             purpose: '',
-            property_category: ''
+            property_category: '',
+            city: '',
+
         }
     });
 
@@ -169,7 +177,7 @@ const AddProperty = () => {
 
 
 
-    const [location, setLocation] = useState<string>('');
+
 
 
 
@@ -207,16 +215,43 @@ const AddProperty = () => {
 
 
 
+    //============================================== Currency Dropdown Logic=======================================================
+
+    // const { data: currencies = [] } = useGetAllCurrenciesQuery();
+    //     { label: "USD", value: "USD", symbol: "$" },
+    //     { label: "EUR", value: "EUR", symbol: "€" },
+    //     { label: "CAD", value: "CAD", symbol: "C$" },
+    // ];
+
+    const { data } = useGetAllCurrenciesQuery({});
+
+
+    const allCurrencies: Currency[] = data?.data || [];
+
+
+    const [code, setCode] = useState("USD");
+    const [symbol, setSymbol] = useState("$");
+
+    const [open, setOpen] = useState(false);
+
+
+
+
+
+
+
+
     const [tanentPropertyPost, { isLoading }] = useTanentPropertyPostMutation()
 
 
     const onPostProperty = async (data: PropertyFormData) => {
+
+        const formData = new FormData();
+
+
         try {
-            const formData = new FormData();
 
-
-            
-
+           
 
             formData.append('title', data.title);
             formData.append('description', data.description);
@@ -224,8 +259,13 @@ const AddProperty = () => {
             formData.append('availability', data.availability);
             formData.append('purpose', data.purpose);
             formData.append('property_category', data.property_category);
+
             formData.append('price', data.price);
+
+            formData.append('currency', code);
+            formData.append('currency_symbol', symbol);
             formData.append('location', data.location);
+            formData.append('city', data.city);
 
             amenities.forEach((item, index) => {
                 formData.append(`amenities[${index}]`, item);
@@ -237,7 +277,6 @@ const AddProperty = () => {
             }
 
             const images = getValues('property_images');
-
 
             images.forEach((item) => {
                 if (!item?.images) return;
@@ -254,15 +293,16 @@ const AddProperty = () => {
                 } as any);
             });
 
-            // ✅ THIS IS THE FIX
             const res = await tanentPropertyPost(formData).unwrap();
+
             if (res) {
                 successMsg(res?.message);
-                return reset()
+                reset();
             }
 
         } catch (error: any) {
-            return errorMsg(error?.data?.message)
+            
+            return errorMsg(error?.data?.message);
         }
     };
 
@@ -395,7 +435,7 @@ const AddProperty = () => {
                                     onBlur={onBlur}
                                     onChangeText={onChange}
                                     value={value}
-                                    keyboardType="numeric" // Number keyboard dekhabe
+                                    keyboardType="numeric"
                                     placeholder="e.g. 1200"
                                     style={tw`font-montserrat-400 text-sm`}
                                 />
@@ -418,7 +458,7 @@ const AddProperty = () => {
                                 <SelectDropdown
                                     data={['Available', 'NotAvailable']}
                                     onSelect={(selectedItem) => {
-                                        onChange(selectedItem); 
+                                        onChange(selectedItem);
                                     }}
                                     defaultValue={value}
                                     renderButton={(selectedItem, isOpened) => (
@@ -493,16 +533,51 @@ const AddProperty = () => {
                             />
                         </View>
                     </View>
-                    <View style={tw` mt-4`}>
+
+
+                    {/* City */}
+                    <View style={tw`flex-1 mt-1 `}>
+                        <Label>City</Label>
+
+                        <Controller
+                            control={control}
+                            name="city"
+                            render={({ field: { onChange, value } }) => (
+                                <View>
+                                    <TextInput
+                                        placeholder="Enter city"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        style={tw`h-12 border ${errors.city ? "border-red-500" : "border-zinc-200"
+                                            } rounded-lg px-4 mb-1 font-montserrat-400 text-xs text-zinc-800`}
+                                        placeholderTextColor="gray"
+                                    />
+
+                                    {errors.city && (
+                                        <Text style={tw`text-red-500 text-[10px] mb-4`}>
+                                            {errors.city.message}
+                                        </Text>
+                                    )}
+                                </View>
+                            )}
+                        />
+                    </View>
+
+                    <View style={tw` mt-1`}>
                         {/* Price Field */}
                         <View style={tw`flex-1`}>
-                            <Label>Price ($)</Label>
+                            <Text style={tw`text-zinc-500 mb-2`}>Price {code} </Text>
+
                             <Controller
                                 control={control}
                                 name="price"
                                 render={({ field: { onChange, onBlur, value } }) => (
                                     <View>
-                                        <View style={tw`h-12 border ${errors.price ? 'border-red-500' : 'border-zinc-200'} rounded-lg px-4 bg-white mb-1 justify-center`}>
+                                        <View
+                                            style={tw`flex-row items-center h-12 border ${errors.price ? "border-red-500" : "border-zinc-200"
+                                                } rounded-lg bg-white px-3`}
+                                        >
+                                            {/* Price Input */}
                                             <TextInput
                                                 onBlur={onBlur}
                                                 onChangeText={onChange}
@@ -510,13 +585,53 @@ const AddProperty = () => {
                                                 placeholder="Enter Amount"
                                                 placeholderTextColor="#A1A1AA"
                                                 keyboardType="numeric"
-                                                style={tw`font-montserrat-400 text-sm text-black`}
+                                                style={tw`flex-1 text-black`}
                                             />
+
+                                            {/* Currency Button */}
+                                            <TouchableOpacity
+                                                onPress={() => setOpen(!open)}
+                                                style={tw`flex-row items-center ml-2 px-2 py-1 bg-zinc-100 rounded-md`}
+                                            >
+                                                <Text style={tw`text-black font-medium`}>
+                                                    {code}
+                                                </Text>
+                                                <Ionicons
+                                                    name="chevron-down"
+                                                    size={16}
+                                                    color="black"
+                                                />
+                                            </TouchableOpacity>
                                         </View>
+
+                                        {/* Error */}
                                         {errors.price && (
-                                            <Text style={tw`text-red-500 text-[10px] mb-4`}>
+                                            <Text style={tw`text-red-500 text-[10px] mt-1`}>
                                                 {errors.price.message}
                                             </Text>
+                                        )}
+
+                                        {/* Dropdown */}
+                                        {open && (
+                                            <View
+                                                style={tw`absolute right-0 top-14 bg-white border border-zinc-200 rounded-lg shadow-md w-24 z-50`}
+                                            >
+                                                {allCurrencies.map((item) => (
+                                                    <TouchableOpacity
+                                                        key={item.code}
+                                                        onPress={() => {
+                                                            setCode(item.code);
+                                                            setSymbol(item.symbol);
+                                                            setOpen(false);
+                                                        }}
+                                                        style={tw`p-2 border-b border-zinc-100`}
+                                                    >
+                                                        <Text style={tw`text-black text-center`}>
+                                                            {item.code}
+                                                        </Text>
+                                                    </TouchableOpacity>
+                                                ))}
+                                            </View>
                                         )}
                                     </View>
                                 )}
@@ -525,7 +640,7 @@ const AddProperty = () => {
 
                         {/* Location  */}
 
-                        <View style={tw`flex-1`}>
+                        <View style={tw`flex-1 mt-3 `}>
                             <Label>Location</Label>
                             <Controller
                                 control={control}

@@ -5,13 +5,20 @@ export const aiApi = baseApi.injectEndpoints({
     findPropertyByAi: builder.mutation({
       query: (trimmedText) => {
         return {
-          url: `/tenant/al-assistant?message=${encodeURIComponent(trimmedText)}`,
+          url: `/tenant/ai-assistant?message=${encodeURIComponent(trimmedText)}`,
           method: "POST",
         };
       },
       invalidatesTags: ["Ai"],
     }),
+    getAllCurrencies: builder.query({
+      query: () => ({
+        url: "/get-currencies",
+        method: "GET",
+      }),
+      // providesTags: ["Currency"],
+    }),
   }),
 });
 
-export const { useFindPropertyByAiMutation } = aiApi;
+export const { useFindPropertyByAiMutation, useGetAllCurrenciesQuery } = aiApi;

@@ -54,7 +54,7 @@ const LandloadPropertyDetails = () => {
                     <View style={tw`flex-row justify-between items-center`}>
                         <Text style={tw` text-bodyText font-medium text-textLg  `}>About This Property</Text>
                         <View>
-                            <Text style={tw`font-medium text-textLg text-primaryText`}>${propertyDetails?.price}</Text>
+                            <Text style={tw`font-medium text-textLg text-primaryText`}>{propertyDetails?.currency_symbol} {propertyDetails?.price}</Text>
                         </View>
                     </View>
                     <View>

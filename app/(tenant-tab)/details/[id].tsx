@@ -2,6 +2,7 @@ import BookingModal from '@/app/components/BookingModal';
 import PropertyDetailsSkeleton from '@/app/components/PropertyDetailsSkeleton';
 import VirtualTour from '@/app/components/VirtualTour';
 import { useSingleTenentPropertyQuery } from '@/app/redux/api/tanentDiscoverApi';
+import { errorMsg } from '@/lib/errorMsg';
 import tw from '@/lib/tailwind';
 import { PropertyResponseType } from '@/lib/type';
 import { imageUrl, imageUrlTwo } from '@/lib/url';
@@ -9,7 +10,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Alert,
   Dimensions,
   Image,
   Linking,
@@ -66,15 +66,12 @@ const PropertyDetails = () => {
     });
   };
 
-  const makeCall = (phoneNumber: string) => {
-    const url = `tel:${phoneNumber}`;
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url);
-      } else {
-        Alert.alert("Error", "Phone dialer is not available on this device.");
-      }
-    });
+  const makeCall = async (phoneNumber: string) => {
+    try {
+      await Linking.openURL(`tel:${phoneNumber}`);
+    } catch (error) {
+      return errorMsg(error);
+    }
   };
 
 
@@ -91,19 +88,8 @@ const PropertyDetails = () => {
 
   const propertyImages = singleProperty?.property_images || [];
 
-  // console.log('is360Visible',is360Visible)
 
-  // const demoImages = [
-  //   {
-  //     path : "https://pannellum.org/images/alma.jpg"
-  //   },
-  //   {
-  //     path : "https://pannellum.org/images/cerro-tolo-s.jpg"
-  //   },
-  //   {
-  //     path : "https://pannellum.org/images/jure.jpg"
-  //   }
-  // ];
+
 
 
   return (
@@ -184,7 +170,7 @@ const PropertyDetails = () => {
               </View>
             </View>
             <View style={tw`items-end`}>
-              <Text style={tw`text-2xl font-bold text-primaryText `}>${singleProperty?.price}</Text>
+              <Text style={tw`text-2xl font-bold text-primaryText `}>{singleProperty?.currency_symbol} {singleProperty?.price}</Text>
               <Text style={tw`text-green-500 text-xs font-medium`}>{singleProperty?.availability} Now</Text>
             </View>
           </View>
@@ -287,6 +273,7 @@ const PropertyDetails = () => {
         id={id}
         showTimeModal={showTimeModal}
         onClose={() => setShowTimeModal(false)}
+        singleProperty = {singleProperty}
       />
 
     </View>

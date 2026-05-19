@@ -1,4 +1,5 @@
 import { useGetNotificationsQuery, useReadAllNotificationMutation, useSingleNotificationReadMutation } from '@/app/redux/api/notificationApi';
+import { errorMsg } from '@/lib/errorMsg';
 import { successMsg } from '@/lib/successMsg';
 import tw from '@/lib/tailwind';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -53,19 +54,19 @@ const NotificationPage = () => {
                     return successMsg(res?.message)
                 }
             } catch (error) {
-                console.error("Failed to read notification", error);
+                return errorMsg(error);
             }
         }
     };
 
-    // সব নোটিফিকেশন রিড করা
+
     const handleReadAll = async () => {
         try {
             const res = await await readAllNotification({}).unwrap();
             successMsg(res?.message)
             Alert.alert("Success", "All notifications marked as read");
         } catch (error) {
-            console.error("Failed to read all", error);
+            return errorMsg(error);
         }
     };
 

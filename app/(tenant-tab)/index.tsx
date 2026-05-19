@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { errorMsg } from '@/lib/errorMsg';
 import { star, threeMenu } from '@/lib/icon';
 import tw from '@/lib/tailwind';
 import { Property } from '@/lib/type';
 import { imageUrl } from '@/lib/url';
 import { Ionicons } from '@expo/vector-icons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import axios from 'axios';
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import {
@@ -19,6 +21,7 @@ import {
     View
 } from 'react-native';
 import { SvgXml } from "react-native-svg";
+import { LocationData } from '../(property-owner-tab)/post';
 import AiModal from '../components/AiModal';
 import PropertySkeleton from '../components/PropertySkeleton';
 import { useGetNotificationsQuery } from '../redux/api/notificationApi';
@@ -40,6 +43,41 @@ export interface NotificationData {
 }
 
 const Home = () => {
+
+    // map suggession 
+    const [mapLat, setMapLat] = useState<number | null>(null);
+    const [mapLng, setMapLng] = useState<number | null>(null);
+
+    const [lat, setLat] = useState<number | null>(null);
+    const [long, setLong] = useState<number | null>(null);
+    const [userLocation, setUserLoc] = useState<LocationData | null>(null);
+
+    const [suggestions, setSuggestions] = useState<any[]>([]);
+
+    const handleLatLong = async (query: string) => {
+        if (!query) return;
+
+        try {
+            const response = await axios.get(
+                `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A`
+            );
+
+
+
+            setSuggestions(response?.data?.results);
+        } catch (error: any) {
+            return errorMsg(error?.data?.message)
+        }
+    };
+
+    useEffect(() => {
+        if (userLocation) {
+            setLat(userLocation.geometry.location.lat);
+            setLong(userLocation.geometry.location.lng);
+        }
+    }, [userLocation]);
+
+
 
     // --- FILTER STATE ---
     const [filterLocation, setFilterLocation] = useState('');
@@ -71,7 +109,7 @@ const Home = () => {
 
     // ==================================== API ======================================
     const { data, isLoading } = useDiscoverPropertyQuery({
-        search: searchQuery || undefined,
+        search: filterLocation || undefined,
         location: appliedFilters.location || undefined,
         purpose: appliedFilters.purpose || undefined,
         property_category: appliedFilters.property_category !== 'All' ? appliedFilters.property_category : undefined,
@@ -82,7 +120,6 @@ const Home = () => {
         radius: appliedFilters.radius || appliedFilters?.location || appliedFilters?.lat || appliedFilters?.lng || appliedFilters?.location || undefined,
     });
 
-    console.log("",)
 
 
     const PROPERTIES: Property[] = data?.data || [];
@@ -197,7 +234,7 @@ const Home = () => {
                     </View>
                 </View>
                 <Text style={tw`text-zinkText text-small mt-2.5`}>{item.location}</Text>
-                <Text style={tw`text-primaryText font-semibold text-textLg mt-5`}>{item.price}</Text>
+                <Text style={tw`text-primaryText font-semibold text-textLg mt-5`}>{item?.currency_symbol} {item.price?.toLocaleString()}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -239,16 +276,16 @@ const Home = () => {
 
                 {/* Search Bar */}
                 <View style={tw`flex-row items-center gap-x-2 mb-5`}>
-                    <View style={tw`flex-1 flex-row items-center bg-zinc-50 border border-zinc-100 h-13 rounded-2xl px-4`}>
+                    <TouchableOpacity
+                        onPress={() => { router.push("/components/MapViewDetails") }}
+                        style={tw`flex-row flex-1 items-center bg-zinc-50 border border-zinc-100 h-13 rounded-2xl px-4`}
+                    >
                         <Ionicons name="search-outline" size={20} color="#999" />
-                        <TextInput
-                            placeholder="Search properties..."
-                            placeholderTextColor="#999"
-                            style={tw`flex-1 ml-3 text-black`}
-                            value={searchQuery}
-                            onChangeText={setSearchQuery}
-                        />
-                    </View>
+
+                        <Text style={tw`flex-1 ml-3 text-zinc-400`}>
+                            Search map...
+                        </Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => setOpenAiModal(true)}
                         style={tw`border border-zinc-100 w-13 h-13 rounded-2xl items-center justify-center`}
@@ -313,15 +350,54 @@ const Home = () => {
                             </TouchableOpacity>
                         </View>
 
-                        {/* Location */}
-                        <Text style={tw`text-zinc-500 mb-2`}>Location Area</Text>
-                        <TextInput
-                            value={filterLocation}
-                            onChangeText={setFilterLocation}
-                            placeholder="Enter location city or title"
-                            placeholderTextColor="#aaa"
-                            style={tw`border border-zinc-100 rounded-xl px-4 py-3.5 mb-5 text-black`}
-                        />
+                        <View style={tw`relative mb-5`}>
+
+                            {/* Label */}
+                            <Text style={tw`text-zinc-500 mb-2`}>
+                                Location Area
+                            </Text>
+                            
+                            {/* Input  */}
+
+                            <TextInput
+                                value={filterLocation}
+                                onChangeText={(text) => {
+                                    setFilterLocation(text);
+                                    setSearchQuery(text);
+                                    handleLatLong(text); // ✅ correct
+                                }}
+                                placeholder="Enter location city or title"
+                                placeholderTextColor="#aaa"
+                                style={tw`border border-zinc-100 rounded-xl px-4 py-3.5 text-black`}
+                            />
+                            {/* Suggestions */}
+                            {suggestions.length > 0 && (
+                                <View
+                                    style={tw`absolute top-20 left-0 right-0 bg-white rounded-xl shadow-md z-50`}
+                                >
+                                    {suggestions.map((item, index) => (
+                                        <TouchableOpacity
+                                            key={index}
+                                            onPress={() => {
+                                                const lat = item.geometry.location.lat;
+                                                const lng = item.geometry.location.lng;
+
+                                                setMapLat(lat);
+                                                setMapLng(lng);
+
+                                                setFilterLocation(item.formatted_address);
+                                                setSuggestions([]);
+                                            }}
+                                            style={tw`p-3 border-b border-zinc-100`}
+                                        >
+                                            <Text style={tw`text-zinc-700`}>
+                                                {item.formatted_address}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ))}
+                                </View>
+                            )}
+                        </View>
 
                         {/* Radius */}
                         <Text style={tw`text-zinc-500 mb-2`}>Radius (km)</Text>
