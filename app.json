@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "RentHepo",
+    "name": "Rent Hapo",
     "slug": "ahmeddyAppDesign",
-    "version": "10.0.1",
+    "version": "10.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/android-app-icon.png",
     "scheme": "ahmeddyappdesign",
@@ -28,7 +28,7 @@
         "monochromeImage": "./assets/images/android-app-icon.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.Chapplus.Renthapo",
+      "package": "com.anonymous.Renthapo",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDpXUCYWUfawKwLO0KlT0V9Y1t2DTBNx-A"
@@ -63,7 +63,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "04c2d0ff-3e3e-439b-bd93-24a516d12e14"
+        // "projectId": "04c2d0ff-3e3e-439b-bd93-24a516d12e14"
       }
     }
   }
