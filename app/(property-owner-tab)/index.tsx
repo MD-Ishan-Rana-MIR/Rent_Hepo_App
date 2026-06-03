@@ -102,7 +102,7 @@ const BusinessDashboard = () => {
                 </View>
 
                 {/* stats card  */}
-
+                        
                 <View style={tw`flex-row flex-wrap justify-between`}>
 
                     <View

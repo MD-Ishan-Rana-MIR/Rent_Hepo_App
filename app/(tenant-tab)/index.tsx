@@ -2,10 +2,13 @@
 import { errorMsg } from '@/lib/errorMsg';
 import { star, threeMenu } from '@/lib/icon';
 import tw from '@/lib/tailwind';
-import { Property } from '@/lib/type';
+import { CurrencyType, Property } from '@/lib/type';
 import { imageUrl } from '@/lib/url';
 import { Ionicons } from '@expo/vector-icons';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
+
+import { Picker } from "@react-native-picker/picker";
+
 import axios from 'axios';
 import { router } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
@@ -24,6 +27,7 @@ import { SvgXml } from "react-native-svg";
 import { LocationData } from '../(property-owner-tab)/post';
 import AiModal from '../components/AiModal';
 import PropertySkeleton from '../components/PropertySkeleton';
+import { useGetAllCurrenciesQuery } from '../redux/api/aiApi';
 import { useGetNotificationsQuery } from '../redux/api/notificationApi';
 import { useDiscoverPropertyQuery } from '../redux/api/tanentDiscoverApi';
 
@@ -76,6 +80,18 @@ const Home = () => {
             setLong(userLocation.geometry.location.lng);
         }
     }, [userLocation]);
+
+
+
+    // get currency api 
+
+    const { data: currencies } = useGetAllCurrenciesQuery(undefined);
+
+    console.log("Currencies: ", currencies?.data);
+
+    const currencyData: CurrencyType[] = currencies?.data || [];
+
+    const [currency, setCurrency] = useState("$");
 
 
 
@@ -356,7 +372,7 @@ const Home = () => {
                             <Text style={tw`text-zinc-500 mb-2`}>
                                 Location Area
                             </Text>
-                            
+
                             {/* Input  */}
 
                             <TextInput
@@ -443,15 +459,52 @@ const Home = () => {
 
                         {/* Price Range */}
                         <View style={tw`mb-6`}>
-                            <View style={tw`flex-row items-center justify-between mb-1`}>
-                                <Text style={tw`text-zinc-500`}>Price Range</Text>
-                                <Text style={tw`text-btnColor font-semibold`}>${price[1].toLocaleString()}</Text>
+                            <View style={tw`flex-row items-center justify-between mb-3`}>
+                                <Text style={tw`text-zinc-500 font-medium`}>Price Range</Text>
+
+                                <View
+                                    style={tw`border border-zinc-200 rounded-lg overflow-hidden bg-white`}
+                                >
+                                    <Picker
+                                        selectedValue={currency}
+                                        onValueChange={(value) => setCurrency(value)}
+                                        style={{ width: 120, height: 40 }}
+                                    >
+                                        <Picker.Item
+                                            label="Select"
+                                            // value={}
+                                            enabled={false}
+                                            color="#9CA3AF"
+                                        />
+
+                                        {currencyData.map((curr) => (
+                                            <Picker.Item
+                                                key={curr.code}
+                                                label={`${curr.symbol}`}
+                                                value={curr.symbol}
+                                            />
+                                        ))}
+                                    </Picker>
+                                </View>
                             </View>
+
+                            <View style={tw`flex-row justify-between mb-2`}>
+                                <Text style={tw`text-btnColor font-semibold`}>
+                                    Min: {currency}
+                                    {price[0].toLocaleString()}
+                                </Text>
+
+                                <Text style={tw`text-btnColor font-semibold`}>
+                                    Max: {currency}
+                                    {price[1].toLocaleString()}
+                                </Text>
+                            </View>
+
                             <MultiSlider
                                 values={[price[0], price[1]]}
                                 sliderLength={sliderWidth}
                                 onValuesChange={(values) => setPrice(values)}
-                                min={1000}
+                                min={10}
                                 max={1000000}
                                 step={1000}
                                 selectedStyle={tw`bg-btnColor h-1`}
@@ -460,9 +513,15 @@ const Home = () => {
                                 pressedMarkerStyle={tw`bg-btnColor h-6 w-6`}
                                 snapped
                             />
+
                             <View style={tw`flex-row justify-between -mt-2`}>
-                                <Text style={tw`text-zinc-400 text-xs`}>$1k</Text>
-                                <Text style={tw`text-zinc-400 text-xs`}>$1M</Text>
+                                <Text style={tw`text-zinc-400 text-xs`}>
+                                    {currency}10
+                                </Text>
+
+                                <Text style={tw`text-zinc-400 text-xs`}>
+                                    {currency}1,000,000
+                                </Text>
                             </View>
                         </View>
 
